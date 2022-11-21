@@ -33,7 +33,7 @@ public class StudentRepository {
 			prop.load(input);
 		} catch (IOException e) {
 			logger.error(e.getMessage());
-			throw new ExceptionInInitializerError(e);
+			throw new ExceptionInInitializerError(e); // wrapping exceptions
 		}
 	}
 
@@ -82,6 +82,7 @@ public class StudentRepository {
 			logger.error(e.getMessage());
 			throw e;
 		} finally {
+
 			if (buffredReader != null)
 				buffredReader.close();
 		}
