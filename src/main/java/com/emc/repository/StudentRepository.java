@@ -8,10 +8,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import com.emc.exceptions.StudentNotFoundException;
 import com.emc.model.Student;
 
 public class StudentRepository {
@@ -37,7 +39,8 @@ public class StudentRepository {
 		}
 	}
 
-	public Student add(Student student) throws IOException {
+	public Student add(Student student)
+			throws IOException, StudentNotFoundException {
 
 		String fileName = prop.getProperty("filename");
 
@@ -56,7 +59,23 @@ public class StudentRepository {
 
 	}
 
-	private Student getLastStudentByID(int id) throws IOException {
+	public Student update(Student student) {
+		throw new UnsupportedOperationException(
+				"The method is not yet implemented");
+	}
+
+	public boolean delete(int studentId) {
+		throw new UnsupportedOperationException(
+				"The method is not yet implemented");
+	}
+
+	public List<Student> getAll() {
+		throw new UnsupportedOperationException(
+				"The method is not yet implemented");
+	}
+
+	private Student getLastStudentByID(int id)
+			throws IOException, StudentNotFoundException {
 
 		BufferedReader buffredReader = null;
 		Student student = null;
@@ -65,11 +84,12 @@ public class StudentRepository {
 			buffredReader = new BufferedReader(
 					new FileReader(prop.getProperty("filename")));
 			String linea;
-
+			boolean found = false;
 			while ((linea = buffredReader.readLine()) != null) {
 
 				String[] datos = linea.split(",", 4);
 				if (datos[0].equals(String.valueOf(id))) {
+					found = true;
 					student = new Student();
 					student.setIdStudent(id);
 					student.setName(datos[1]);
@@ -77,6 +97,10 @@ public class StudentRepository {
 					student.setAge(Integer.parseInt(datos[3]));
 					break;
 				}
+			}
+
+			if (found == false) {
+				throw new StudentNotFoundException("Student not found");
 			}
 		} catch (IOException e) {
 			logger.error(e.getMessage());

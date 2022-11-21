@@ -38,4 +38,9 @@ public class FileUtil {
 		return file;
 	}
 
+	public static boolean deleteFile() {
+		boolean isSuccessfull = file.delete();
+		return isSuccessfull;
+	}
+
 }
